@@ -36,7 +36,7 @@ if __name__ == '__main__':
         test_size=0.2, random_state=random.randint(0, 1000), shuffle=True
     )
 
-    # it neccessary to create folder weights
+    # create folder weights
     model.fit(X_train, Y_train, epochs=200, batch_size=1, verbose=1, validation_data=(X_test, Y_test),
               callbacks=[
                   ModelCheckpoint(filepath='weights/model.{val_loss:.3f}-{val_accuracy:.3f}.h5', save_best_only=True, save_weights_only=False)
