@@ -9,12 +9,6 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import LabelEncoder
 
 
-def build_callbacks():
-    checkpointer = ModelCheckpoint(filepath='color.h5', verbose=1, save_best_only=True, save_weights_only=True)
-    callbacks = [checkpointer]
-    return callbacks
-
-
 def create_model():
     model = keras.Sequential()
     model.add(layers.Dense(20, input_dim=3, activation="relu"))  # input 3 neurons | hidden layers 20
@@ -51,7 +45,6 @@ if __name__ == '__main__':
     )
 
     # model.load('weights/my-weights.h5')
-
     predictions = model.predict(X_test)
     encoded_output = np.argmax(predictions, axis=1)
     encoded_output_name = encoder.inverse_transform(encoded_output)
