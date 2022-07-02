@@ -36,18 +36,33 @@ if __name__ == '__main__':
         test_size=0.2, random_state=random.randint(0, 1000), shuffle=True
     )
 
-    # create folder weights
-    model.fit(X_train, Y_train, epochs=200, batch_size=1, verbose=1, validation_data=(X_test, Y_test),
-              callbacks=[
-                  ModelCheckpoint(filepath='weights/model.{val_loss:.3f}-{val_accuracy:.3f}.h5', save_best_only=True, save_weights_only=False)
-              ],
+    # create folder weights and training
+    #model.fit(X_train, Y_train, epochs=200, batch_size=1, verbose=1, validation_data=(X_test, Y_test),
+    #          callbacks=[
+    #              ModelCheckpoint(filepath='weights/model.{val_loss:.3f}-{val_accuracy:.3f}.h5', save_best_only=True, save_weights_only=False)
+    #          ],
+    #)
 
-    )
+    #testing
+    model.load_weights('weights/model.0.13-0.99.h5')
+    predictions = model.predict(np.array([
+        [216, 38, 6.0],  # red
+        [244, 234, 34],  # yellow
+        [35, 73, 31],  # green
+        [128, 111, 35],  # olive
+        [10, 167, 252],  # blue
+        [10, 220, 252],  # aqua
+        [10, 252, 240],  # teal
+        [209, 27, 133]   # fuchsia
+    ]).astype(float) / 255.0)
 
-    # model.load('weights/my-weights.h5')
-    predictions = model.predict(X_test)
+
     encoded_output = np.argmax(predictions, axis=1)
     encoded_output_name = encoder.inverse_transform(encoded_output)
+    print(encoded_output)
+    print(encoded_output_name)
+
+    # calculate F1 score todo
+    predictions_data = model.predict(X_test)
     y_test_max = np.argmax(Y_test, axis=1)
     encoded_output_reference = encoder.inverse_transform(y_test_max)
-    # calculate F1 score...
